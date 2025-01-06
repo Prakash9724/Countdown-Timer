@@ -58,7 +58,7 @@ const Timer = forwardRef((props,ref) => {
   };
 
   return (
-    <div ref={ref} className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-400 via-pink-500 to-red-500">
+    <div ref={ref} id="timer" className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-400 via-pink-500 to-red-500">
       <div className="p-8 bg-white rounded-lg shadow-md w-full max-w-lg ">
         <h1 className="text-5xl font-bold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to bg-pink-600 transition-all duration-300 ">
           Countdown Timer
