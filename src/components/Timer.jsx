@@ -1,6 +1,8 @@
 import { div } from "framer-motion/client";
 import React, { forwardRef, useEffect, useState } from "react";
 import { BackgroundBeamsWithCollision } from "./ui/BackgroundBeamsWithCollision";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const Timer = () => {
   const [targetTime, setTargetTime] = useState(""); //target time ke liye 
@@ -59,8 +61,19 @@ const Timer = () => {
     }
   };
 
+
+  useGSAP(()=>{
+    gsap.to("#timer",{
+      duration: 1,
+      scale: 1.1,
+      ease: "elastic.out(1, 0.3)",
+      stagger: 0.2
+    })
+  })
+
   return (
 <>
+    
    <BackgroundBeamsWithCollision/>
     <div  id="timer" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" >
       <div className="p-8 bg-white rounded-lg shadow-md w-full max-w-lg ">
