@@ -61,21 +61,30 @@ const Timer = () => {
     }
   };
 
-
-  useGSAP(()=>{
+  const timeranimation = () =>{
     gsap.to("#timer",{
       duration: 1,
       scale: 1.1,
       ease: "elastic.out(1, 0.3)",
       stagger: 0.2
     })
-  })
+  }
+
+  const timeranimationout = () =>{
+    gsap.to("#timer",{
+      scale: 1,
+      duration:1,
+      ease: "elastic.out(1, 0.3)",
+      stagger: 0.2
+    })
+  }
+
 
   return (
 <>
     
    <BackgroundBeamsWithCollision/>
-    <div  id="timer" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" >
+    <div  id="timer" onMouseLeave={timeranimationout} onMouseEnter={timeranimation} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" >
       <div className="p-8 bg-white rounded-lg shadow-md w-full max-w-lg ">
         <h1 className="text-5xl font-bold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to bg-pink-600 transition-all duration-300 ">
           Countdown Timer
