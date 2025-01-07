@@ -199,7 +199,7 @@ const Explosion = ({
     id: index,
     initialX: 0,
     initialY: 0,
-    directionX: Math.floor(Math.random() * 180 - 40),
+    directionX: Math.floor(Math.random() * 170 - 40),
     directionY: Math.floor(Math.random() * -150 - 10),
   }));
 

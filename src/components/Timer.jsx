@@ -64,7 +64,7 @@ const Timer = () => {
   const timeranimation = () =>{
     gsap.to("#timer",{
       duration: 1,
-      scale: 1.1,
+      scale: 1.10,
       ease: "elastic.out(1, 0.3)",
       stagger: 0.2
     })
@@ -84,11 +84,13 @@ const Timer = () => {
 <>
     
    <BackgroundBeamsWithCollision/>
+   
     <div  id="timer" onMouseLeave={timeranimationout} onMouseEnter={timeranimation} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" >
       <div className="p-8 bg-white rounded-lg shadow-md w-full max-w-lg ">
         <h1 className="text-5xl font-bold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to bg-pink-600 transition-all duration-300 ">
           Countdown Timer
         </h1>
+        <input type="text" placeholder="Enter your Title" className="text-2xl w-full p-2 border rounded-lg font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to bg-pink-600 transition-all duration-300 " />
         <div className="mb-4">
           <label
             htmlFor="date"
