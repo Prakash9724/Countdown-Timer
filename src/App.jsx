@@ -3,6 +3,7 @@ import Cursor from './components/Cursor'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { useRef } from 'react'
+import { BackgroundBeamsWithCollision } from './components/ui/BackgroundBeamsWithCollision'
 
 const App = () => {
 

@@ -1,6 +1,8 @@
+import { div } from "framer-motion/client";
 import React, { forwardRef, useEffect, useState } from "react";
+import { BackgroundBeamsWithCollision } from "./ui/BackgroundBeamsWithCollision";
 
-const Timer = forwardRef((props,ref) => {
+const Timer = () => {
   const [targetTime, setTargetTime] = useState(""); //target time ke liye 
   const [targetDate, setTargetDate] = useState(""); //target date ke liye
   const [timeleft, setTimeLeft] = useState({ 
@@ -58,7 +60,9 @@ const Timer = forwardRef((props,ref) => {
   };
 
   return (
-    <div ref={ref} id="timer" className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-400 via-pink-500 to-red-500">
+<>
+   <BackgroundBeamsWithCollision/>
+    <div  id="timer" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" >
       <div className="p-8 bg-white rounded-lg shadow-md w-full max-w-lg ">
         <h1 className="text-5xl font-bold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to bg-pink-600 transition-all duration-300 ">
           Countdown Timer
@@ -129,7 +133,8 @@ const Timer = forwardRef((props,ref) => {
         )}
       </div>
     </div>
+    </>   
   );
-});
+};
 
 export default Timer;
