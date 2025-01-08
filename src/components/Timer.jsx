@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BackgroundBeamsWithCollision } from "./ui/BackgroundBeamsWithCollision";
 import song from "../assets/song.mp3";
 import gsap from "gsap";
-import { audio } from "framer-motion/client";
+
 
 const Timer = () => {
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
