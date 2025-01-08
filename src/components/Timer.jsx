@@ -1,9 +1,11 @@
 import React, { forwardRef, useEffect, useState } from "react";
 import { BackgroundBeamsWithCollision } from "./ui/BackgroundBeamsWithCollision";
 import gsap from "gsap";
-import { i } from "framer-motion/client";
+import { a } from "framer-motion/client";
+
 
 const Timer = () => {
+  const [countdowns , setCountdowns] = useState([]);
   const [targetTime, setTargetTime] = useState(""); //target time ke liye 
   const [targetDate, setTargetDate] = useState(""); //target date ke liye
   const [timeleft, setTimeLeft] = useState({ 
@@ -19,54 +21,108 @@ const Timer = () => {
 
 
 
-  useEffect(() => {
-    let timer;
+  // useEffect(() => {
+  //   let timer;
 
-    if (isRunning) {
-      timer = window.setInterval(() => {
-        const now = new Date().getTime();
+  //   if (isRunning) {
+  //     timer = window.setInterval(() => {
+  //       const now = new Date().getTime();
        
-        //current time
-        const target = new Date(`${targetDate} ${targetTime}`).getTime(); //target time
+  //       //current time
+  //       const target = new Date(`${targetDate} ${targetTime}`).getTime(); //target time
 
-        const timeleft = target - now; //time left in milliseconds
+  //       const timeleft = target - now; //time left in milliseconds
 
-        if (timeleft > 0) {
-          setTimeLeft({
-            days: Math.floor(timeleft / (1000 * 60 * 60 * 24)),
-            hours: Math.floor(
-              (timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-            ),
-            minutes: Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60)),
-            seconds: Math.floor((timeleft % (1000 * 60)) / 1000),
-          });
-        } else {
-          clearInterval(timer);
-          setisRunning(false);
-          setMessage("Countdown Finished");
+  //       if (timeleft > 0) {
+  //         setTimeLeft({
+  //           days: Math.floor(timeleft / (1000 * 60 * 60 * 24)),
+  //           hours: Math.floor(
+  //             (timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  //           ),
+  //           minutes: Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60)),
+  //           seconds: Math.floor((timeleft % (1000 * 60)) / 1000),
+  //         });
+  //       } else {
+  //         clearInterval(timer);
+  //         setisRunning(false);
+  //         setMessage("Countdown Finished");
+  //       }
+  //     }, 1000);
+  //   }
+
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // }, [isRunning, targetDate, targetTime]);
+
+
+  useEffect(() => {
+    
+    const interval = setInterval(() => {
+      setCountdowns.map((cd)=>{
+        const now = new Date().getTime();
+        const target = new Date()
+        const timeleft = target - now;
+
+        if(timeleft > 0){
+          return{
+            ...cd,timeleft:{
+              days:Math.floor(timeleft/(1000 * 60 * 60 * 24)),
+              hours:Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+              minutes:Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60)),
+              seconds:Math.floor((timeleft % (1000 * 60)) / 1000)
+            },
+          };
+        }else{
+          if(!cd.finished){
+            playSound();
+          }
+          return {...cd ,finished:true}
         }
-      }, 1000);
-    }
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, [isRunning, targetDate, targetTime]);
+      })
+    }, 1000);
+  
+    return () => clearInterval(interval);
+  }, [])
+  
 
   const handleStart = () => {
     
-    if(inputValue.trim() !== ""){
+    if(inputValue.trim() !== "" || targetDate || targetTime){
       setTitle(inputValue);
       setInputValue('')
+      setMessage("Please select a date and time")
     }
 
-    if (targetDate && targetTime) {
-      setisRunning(true);
-      setMessage("");
-    } else {
-      setMessage("Please select a date and time");
-    }
+    setCountdowns((prev)=>[
+      ...prev,{
+        id:Date.now(),
+        title:inputValue,
+        targetDate,
+        targetTime,
+        timeleft:{
+          days:0,
+          hours:0,
+          minutes:0,
+          seconds:0
+        },
+        finished:false
+
+      },
+    ])
+
+    setInputValue("");
+    setTargetDate("");
+    setTargetTime("");
+    setMessage("");
+
   };
+
+  const playSound = () => {
+    const audio = new Audio("https://www.soundjay.com/button/beep-07.wav");
+    audio.play();
+    audio.loop = true;
+  }
 
   const timeranimation = () =>{
     gsap.to("#timer",{
@@ -168,6 +224,10 @@ const Timer = () => {
         )}
       </div>
     </div>
+
+
+
+    
     </>   
   );
 };

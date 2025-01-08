@@ -17,9 +17,10 @@ const App = () => {
   }
   
   return (
-   <div onMouseMove={handleMouseMove} style={{ height: '100vh', overflow: 'hidden' }}>
+   <div onMouseMove={handleMouseMove} style={{ height: '100vh', overflow: 'hidden' }} >
       <Cursor ref={cursor} />
       <Timer />
+      
    </div>
   )
 }
