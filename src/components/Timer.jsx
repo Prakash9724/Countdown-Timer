@@ -1,8 +1,7 @@
-import { div } from "framer-motion/client";
 import React, { forwardRef, useEffect, useState } from "react";
 import { BackgroundBeamsWithCollision } from "./ui/BackgroundBeamsWithCollision";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { i } from "framer-motion/client";
 
 const Timer = () => {
   const [targetTime, setTargetTime] = useState(""); //target time ke liye 
@@ -15,6 +14,10 @@ const Timer = () => {
   }); //time left ke liye 
   const [isRunning, setisRunning] = useState(false); //timer chal raha hai ya nahi
   const [message, setMessage] = useState(""); //message ke liye
+  const [title, setTitle] = useState("");
+  const [inputValue, setInputValue] = useState('')
+
+
 
   useEffect(() => {
     let timer;
@@ -22,13 +25,11 @@ const Timer = () => {
     if (isRunning) {
       timer = window.setInterval(() => {
         const now = new Date().getTime();
-        console.log(now);
+       
         //current time
         const target = new Date(`${targetDate} ${targetTime}`).getTime(); //target time
-        console.log(target);
 
         const timeleft = target - now; //time left in milliseconds
-        console.log(timeleft);
 
         if (timeleft > 0) {
           setTimeLeft({
@@ -41,7 +42,7 @@ const Timer = () => {
           });
         } else {
           clearInterval(timer);
-          setInterval(false);
+          setisRunning(false);
           setMessage("Countdown Finished");
         }
       }, 1000);
@@ -53,6 +54,12 @@ const Timer = () => {
   }, [isRunning, targetDate, targetTime]);
 
   const handleStart = () => {
+    
+    if(inputValue.trim() !== ""){
+      setTitle(inputValue);
+      setInputValue('')
+    }
+
     if (targetDate && targetTime) {
       setisRunning(true);
       setMessage("");
@@ -88,9 +95,9 @@ const Timer = () => {
     <div  id="timer" onMouseLeave={timeranimationout} onMouseEnter={timeranimation} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" >
       <div className="p-8 bg-white rounded-lg shadow-md w-full max-w-lg ">
         <h1 className="text-5xl font-bold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to bg-pink-600 transition-all duration-300 ">
-          Countdown Timer
+          {title || "Countdown Timer"}
         </h1>
-        <input type="text" placeholder="Enter your Title" className="text-2xl w-full p-2 border rounded-lg font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to bg-pink-600 transition-all duration-300 " />
+        <input type="text" placeholder="Enter your Title" value={inputValue} onChange={(e) => setInputValue(e.target.value)}  className="text-xl/2 w-full p-2 border rounded-lg font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to bg-pink-600 transition-all duration-300 " />
         <div className="mb-4">
           <label
             htmlFor="date"
@@ -123,7 +130,11 @@ const Timer = () => {
         </div>
 
         <button
-          onClick={handleStart}
+          onClick={()=>{
+            handleStart();
+            
+          }}
+         
           className="w-full text-white p-3 rounded-md bg-gradient-to-r from-purple-500 transition-colors to-pink-500"
         >
           Start Countdown
