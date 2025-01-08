@@ -30,25 +30,38 @@ const Timer = () => {
     });
   };
 
+
   const playSound = () => {
     if (song && !isAudioPlaying) {
       const audio = new Audio(song);
       audio.play();
-      audio.loop = true;
+      audio.loop = false; // Loop ko false rakha hai tak ki ek baar bajke ruk jaye
       setIsAudioPlaying(true);
     }
   };
-
+  
+  const triggerVisualEffect = (timerId) => {
+    gsap.fromTo(
+      `#timer-${timerId}`,
+      { backgroundColor: "#f3f4f6" },
+      {
+        backgroundColor: "#ff4d4d",
+        duration: 0.5,
+        ease: "power2.inOut",
+        yoyo: true,
+        repeat: 9, // Animation repeat hoga
+      }
+    );
+  };
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setCountdowns((prevCountdowns) =>
         prevCountdowns.map((cd) => {
           const now = new Date().getTime();
-          const target = new Date(
-            `${cd.targetDate} ${cd.targetTime}`
-          ).getTime();
+          const target = new Date(`${cd.targetDate} ${cd.targetTime}`).getTime();
           const timeLeft = target - now;
-
+  
           if (timeLeft > 0) {
             const updatedTimeLeft = {
               days: Math.floor(timeLeft / (1000 * 60 * 60 * 24)),
@@ -63,13 +76,14 @@ const Timer = () => {
           } else {
             if (!cd.finished) {
               playSound(); // Timer completion sound
+              triggerVisualEffect(cd.id); // Visual effect trigger
             }
             return { ...cd, finished: true };
           }
         })
       );
     }, 1000);
-
+  
     return () => clearInterval(interval);
   }, []);
 
@@ -141,7 +155,7 @@ const Timer = () => {
           <button
             onClick={() => {
               handleStart();
-              playSound();
+             
             }}
             className="w-full text-white p-3 rounded-md bg-gradient-to-r from-purple-500 to-pink-500"
           >
